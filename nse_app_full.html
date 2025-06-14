@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>NSE - Login & Rekomendasi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #f0f4f8;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .active {
+      display: flex !important;
+    }
+    .box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+    h2, h1 {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      text-align: left;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .rekomendasi-container button {
+      background-color: #dc3545;
+      border-radius: 6px;
+    }
+    .rekomendasi-container button.completed {
+      background-color: #28a745 !important;
+    }
+    .battery {
+      font-size: 20px;
+      margin-left: 10px;
+    }
+    .green {
+      color: green;
+    }
+    .red {
+      color: red;
+    }
+    .star {
+      font-size: 30px;
+      color: #ccc;
+      cursor: pointer;
+    }
+    .star.checked {
+      color: gold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Section -->
+  <div class="container active" id="loginSection">
+    <div class="box">
+      <img src="WhatsApp Image 2025-06-09 at 21.03.41.jpeg" alt="Logo NSE" style="width: 100px; height: auto; margin-bottom: 20px;">
+      <h2>Login NSE</h2>
+      <form id="loginForm">
+        <label for="name">Nama:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Umur:</label>
+        <input type="number" id="age" name="age" required min="1">
+
+        <button type="submit">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Rekomendasi Section -->
+  <div class="container" id="rekomendasiSection">
+    <div class="box rekomendasi-container">
+      <h2>10 Rekomendasi untuk Mengurangi Kelelahan Emosional Perawat</h2>
+      <table id="recommendationTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Rekomendasi</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button id="nextBtn">Simpan / Next</button>
+    </div>
+  </div>
+
+  <!-- Terima Kasih Section -->
+  <div class="container" id="thanksSection">
+    <div class="box thanks-box">
+      <h1>Terima Kasih!</h1>
+      <p>Semoga rekomendasi ini membantu Anda merasa lebih baik dan sehat secara emosional.</p>
+      <form id="feedbackForm">
+        <label for="comment">Komentar Anda:</label>
+        <textarea id="comment" name="comment" rows="4" style="width:100%; border-radius: 8px;"></textarea>
+
+        <label>Rating:</label>
+        <div id="stars">
+          <span class="star" data-value="1">&#9733;</span>
+          <span class="star" data-value="2">&#9733;</span>
+          <span class="star" data-value="3">&#9733;</span>
+          <span class="star" data-value="4">&#9733;</span>
+          <span class="star" data-value="5">&#9733;</span>
+        </div>
+        <button type="submit">Kirim</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Konfirmasi Section -->
+  <div class="container" id="confirmationSection">
+    <div class="box">
+      <h1>✔️ Data Tersimpan</h1>
+      <p>Terima kasih, data Anda telah berhasil disimpan.</p>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const loginSection = document.getElementById("loginSection");
+    const rekomendasiSection = document.getElementById("rekomendasiSection");
+    const thanksSection = document.getElementById("thanksSection");
+    const confirmationSection = document.getElementById("confirmationSection");
+    const tbody = document.querySelector("#recommendationTable tbody");
+    const nextBtn = document.getElementById("nextBtn");
+    const stars = document.querySelectorAll(".star");
+
+    const recommendations = [
+      "Istirahat sejenak di sela shift kerja",
+      "Mendengarkan musik relaksasi",
+      "Berbicara dengan rekan kerja",
+      "Melakukan meditasi singkat",
+      "Menulis jurnal atau catatan harian",
+      "Menghindari penggunaan gadget saat istirahat",
+      "Berolahraga ringan seperti stretching",
+      "Mengatur waktu tidur dengan baik",
+      "Mengikuti pelatihan manajemen stres",
+      "Mengonsumsi makanan sehat secara rutin"
+    ];
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      loginSection.classList.remove("active");
+      rekomendasiSection.classList.add("active");
+      loadRecommendations();
+    });
+
+    function loadRecommendations() {
+      tbody.innerHTML = "";
+      recommendations.forEach((rec, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${rec}</td>
+          <td>
+            <button onclick="toggleComplete(this)">
+              Tandai <span class="battery red">🔋</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function toggleComplete(btn) {
+      const battery = btn.querySelector('.battery');
+      btn.classList.add('completed');
+      battery.classList.remove('red');
+      battery.classList.add('green');
+    }
+
+    nextBtn.addEventListener("click", () => {
+      rekomendasiSection.classList.remove("active");
+      thanksSection.classList.add("active");
+    });
+
+    // Star Rating
+    stars.forEach(star => {
+      star.addEventListener("click", function () {
+        let rating = this.getAttribute("data-value");
+        stars.forEach(s => s.classList.remove("checked"));
+        for (let i = 0; i < rating; i++) {
+          stars[i].classList.add("checked");
+        }
+      });
+    });
+
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      thanksSection.classList.remove("active");
+      confirmationSection.classList.add("active");
+    });
+  </script>
+
+</body>
+</html>
